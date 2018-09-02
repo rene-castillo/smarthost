@@ -1,9 +1,3 @@
-/*
- * Created on 31.08.2018
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
 package com.smarthost.challenge;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -127,10 +121,13 @@ public class BookingControllerTest {
 	 */
 	@Test
 	public void testUpgrade() throws Exception {
+		testBooking(3, 1, new long[] {99, 98, 97, 96, 95}, 3, 1, 99+98+97+96);	// upgrade 1 economy and 2 additional customers, 95 gets no room
+		testBooking(3, 0, new long[] {99, 98, 97, 96}, 3, 0, 99+98+97);	// upgrade 3 additional customers, 96 gets no room
+		
 		// @formatter:off
 		testBooking(1, 0, new long[] {99, 98}, 1, 0, 99);	// 99 gets upgrade, 98 gets no room
-		testBooking(1, 1, new long[] {99, 98, 97}, 1, 0, 99+98);	// 99 gets upgrade, 97 gets no room TODO: conceptual problem of API: can't tell who got the upgrade 99 or 98
-		testBooking(1, 1, new long[] {100, 99, 98}, 1, 0, 100+99);	// single premium room is occupied by premium guest, no upgrade. 98 gets no room
+		testBooking(1, 1, new long[] {99, 98, 97}, 1, 1, 99+98);	// 99 gets upgrade, 97 gets no room TODO: conceptual problem of API: can't tell who got the upgrade 99 or 98
+		testBooking(1, 1, new long[] {100, 99, 98}, 1, 1, 100+99);	// single premium room is occupied by premium guest, no upgrade. 98 gets no room
 		testBooking(1, 2, new long[] {99, 98}, 0, 2, 99+98);	// no upgrade because economy is not overbooked
 		testBooking(1, 2, new long[] {99, 98, 97}, 1, 2, 99+98+97);	// 99 gets upgrade
 		// @formatter:on
